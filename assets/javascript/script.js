@@ -8,7 +8,7 @@ const Player = (name, symbol) => {
 // const modal = (() => {// put all the game creation logic in here (just ask for player names)})
 
 const GameBoard = (() => {
-    const BOARD = []
+    const board = []
     const grid = document.querySelector("#grid")
 
     function init() {
@@ -16,20 +16,20 @@ const GameBoard = (() => {
             cell = document.createElement("div")
             cell.classList.add('cell')
             cell.setAttribute("data-player", "")
-            BOARD.push(cell)
+            board.push(cell)
             grid.appendChild(cell)
         }
     }
 
     function reset() {
-        BOARD = []
+        board = []
         while (grid.firstChild) {
             grid.removeChild(grid.lastChild);
         }
         init()
     }
 
-    return { BOARD, grid: grid, init, reset }
+    return { board, grid, init, reset }
 })()
 
 const GameController = (() => {
@@ -38,7 +38,7 @@ const GameController = (() => {
     let turncount = 1
     let currentPlayer = player1
     GameBoard.init(player1, player2)
-    board = GameBoard.BOARD
+    board = GameBoard.board
 
     function play(e) {
         if (turncount % 2 == 0) {
@@ -49,15 +49,36 @@ const GameController = (() => {
 
         e.target.textContent = currentPlayer.getSymbol()
         e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
+        checkWin()
         console.log(turncount)
         turncount++
     }
 
+    function checkWin() {
+        const winPositions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ]
+
+        winPositions.forEach((win, index) => {
+            if (board[win[0]].getAttribute("data-player") === currentPlayer.getSymbol() &&
+                board[win[1]].getAttribute("data-player") === currentPlayer.getSymbol() &&
+                board[win[2]].getAttribute("data-player") === currentPlayer.getSymbol()) {
+                alert(`${currentPlayer.getName()} has won!`)
+            }
+        })
+
+    }
 
     board.forEach((cell) => {
         cell.addEventListener("click", play)
     })
 
     // a reset game function that resets turn count and calls the reset board function 
-    // a winner function that checks if three in a row has been achieved. 
 })()
