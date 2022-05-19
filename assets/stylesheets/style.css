@@ -1,18 +1,66 @@
+:root {
+    --header: 7rem;
+    --footer: 35px;
+    --main: calc(100vh - calc(var(--header) + var(--footer)));
+}
+
 body {
+    background: linear-gradient(45deg, rgb(65, 115, 255), rgb(171, 197, 255));
+}
+
+header {
+    width: 100%;
+    height: var(--header);
+}
+
+#banner {
+    font-size: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+main {
+    height: var(--main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#grid {
+    border-radius: 15px;
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid black;
+    background-color: white;
+    grid-template-rows: repeat(3, 150px);
+    grid-template-columns: repeat(3, 150px);
+}
+
+.cell {
+    background: gold;
+    border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
+footer {
+    width: 100%;
+    height: 15px;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    background: black;
+    opacity: 0.8;
 }
 
-.cell {
-    width: 50px;
-    height: 50px;
-    background: greenyellow;
+footer a {
+    text-decoration: none;
+    color: white;
+}
+
+footer p {
+    color: white;
 }

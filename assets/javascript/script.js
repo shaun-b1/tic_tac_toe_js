@@ -1,11 +1,14 @@
-const Player = (name, symbol) => {
+const PlayerFactory = (name, symbol) => {
     const getName = () => name;
     const getSymbol = () => symbol;
 
     return { getName, getSymbol };
 }
 
-// const modal = (() => {// put all the game creation logic in here (just ask for player names)})
+const DOMController = (() => {
+
+    return
+})()
 
 const GameBoard = (() => {
     const board = []
@@ -29,12 +32,12 @@ const GameBoard = (() => {
         init()
     }
 
-    return { board, grid, init, reset }
+    return { board, init, reset }
 })()
 
 const GameController = (() => {
-    const player1 = Player("player 1", "X")
-    const player2 = Player("player 2", "O")
+    const player1 = PlayerFactory("player 1", "X")
+    const player2 = PlayerFactory("player 2", "O")
     let turncount = 1
     let currentPlayer = player1
     GameBoard.init(player1, player2)
@@ -47,11 +50,15 @@ const GameController = (() => {
             currentPlayer = player1
         }
 
-        e.target.textContent = currentPlayer.getSymbol()
-        e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
-        checkWin()
-        console.log(turncount)
-        turncount++
+        if (e.target.getAttribute("data-player") == "") {
+            e.target.textContent = currentPlayer.getSymbol()
+            e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
+            checkWin()
+            console.log(turncount)
+            turncount++
+        } else {
+            return
+        }
     }
 
     function checkWin() {
@@ -66,7 +73,7 @@ const GameController = (() => {
             [2, 4, 6]
         ]
 
-        winPositions.forEach((win, index) => {
+        winPositions.forEach(win => {
             if (board[win[0]].getAttribute("data-player") === currentPlayer.getSymbol() &&
                 board[win[1]].getAttribute("data-player") === currentPlayer.getSymbol() &&
                 board[win[2]].getAttribute("data-player") === currentPlayer.getSymbol()) {
