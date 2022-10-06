@@ -14,18 +14,24 @@ function playerFactory(name, symbol) {
 }
 
 const DOMController = (() => {
-    const header = document.querySelector("#header")
-    const grid = document.querySelector("#grid")
+    const grid = document.querySelector('#grid')
+    const header = document.querySelector('header')
 
-    function playerTurn() {
+    function playerTurn(player) {
+        if(header.contains(document.querySelector('.player-turn)'))) { 
+            header.removeChild('.player-turn')           
+        }
+
         const playerTurnDisplay = document.createElement('div');
         playerTurnDisplay.classList.add('player-turn')
 
-        // const playerTurnText = document.createElement('p');
-        // playerTurnText.textContent = `Fred's turn`
+        const playerTurnText = document.createElement('p');
+        playerTurnText.textContent = `${player.getName()}`
 
-        // playerTurnDisplay.appendChild(playerTurnText);
-        header.appendChild(playerTurnDisplay)
+        playerTurnDisplay.appendChild(playerTurnText);
+        header.appendChild(playerTurnDisplay);
+
+        return playerTurnDisplay
     }
 
     function winModal(player) {
@@ -85,10 +91,10 @@ const GameBoard = (() => {
 const GameController = (() => {
     const player1 = playerFactory("player 1", "X")
     const player2 = playerFactory("player 2", "O")
-    let turncount = 1
     let currentPlayer = player1
     GameBoard.init()
     board = GameBoard.board
+    DOMController.playerTurn(currentPlayer)
 
     function play(e) {
 
@@ -99,7 +105,7 @@ const GameController = (() => {
                     e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
                     checkWin()
                     currentPlayer = player2
-                    turncount++
+                    DOMController.playerTurn(currentPlayer)
                 } else {
                     return
                 }
@@ -111,7 +117,7 @@ const GameController = (() => {
                     e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
                     checkWin()
                     currentPlayer = player1
-                    turncount++
+                    DOMController.playerTurn(currentPlayer)
                 } else {
                     return
                 }
