@@ -1,63 +1,121 @@
-const PlayerFactory = (name, symbol) => {
-    const getName = () => name;
-    const getSymbol = () => symbol;
+function playerFactory(name, symbol) {
 
-    return { getName, getSymbol };
+    return {
+        getName() {
+            return name
+        },
+        getSymbol() {
+            return symbol
+        },
+        setName(name) {
+            this.name = name
+        }
+    };
 }
 
 const DOMController = (() => {
+    const header = document.querySelector("#header")
+    const grid = document.querySelector("#grid")
 
-    return
+    function playerTurn() {
+        const playerTurnDisplay = document.createElement('div');
+        playerTurnDisplay.classList.add('player-turn')
+
+        // const playerTurnText = document.createElement('p');
+        // playerTurnText.textContent = `Fred's turn`
+
+        // playerTurnDisplay.appendChild(playerTurnText);
+        header.appendChild(playerTurnDisplay)
+    }
+
+    function winModal(player) {
+        winModal = document.createElement('div');
+        winModal.classList.add('modal');
+        winModal.id = 'winner-modal';
+
+        modalBox = document.createElement('div')
+
+        winDescription = document.createElement('p')
+        winDescription.textContent = `${player.getName()} has won the game`
+
+        closeWinModal = document.createElement('button');
+        closeWinModal.classList.add('close-modal')
+        closeWinModal.textContent = 'close modal'
+        closeWinModal.addEventListener('click', () => {
+            closeWinModal.parentElement.parentElement.remove()
+        })
+
+        modalBox.append(winDescription, closeWinModal);
+        winModal.appendChild(modalBox);
+        document.body.appendChild(winModal)
+
+    }
+
+    function createCell() {
+        cell = document.createElement("div")
+        cell.classList.add('cell')
+        cell.setAttribute("data-player", "")
+        grid.appendChild(cell)
+        return cell
+    }
+
+    return { grid, playerTurn, winModal, createCell }
 })()
 
 const GameBoard = (() => {
-    const board = []
-    const grid = document.querySelector("#grid")
+    let board = []
 
     function init() {
         for (let i = 0; i < 9; i++) {
-            cell = document.createElement("div")
-            cell.classList.add('cell')
-            cell.setAttribute("data-player", "")
+            cell = DOMController.createCell()
             board.push(cell)
-            grid.appendChild(cell)
         }
     }
 
     function reset() {
-        board = []
-        while (grid.firstChild) {
-            grid.removeChild(grid.lastChild);
-        }
-        init()
+        board.forEach(cell => {
+            cell.setAttribute('data-player', '')
+            cell.textContent = ''
+        })
     }
 
     return { board, init, reset }
 })()
 
 const GameController = (() => {
-    const player1 = PlayerFactory("player 1", "X")
-    const player2 = PlayerFactory("player 2", "O")
+    const player1 = playerFactory("player 1", "X")
+    const player2 = playerFactory("player 2", "O")
     let turncount = 1
     let currentPlayer = player1
-    GameBoard.init(player1, player2)
+    GameBoard.init()
     board = GameBoard.board
 
     function play(e) {
-        if (turncount % 2 == 0) {
-            currentPlayer = player2
-        } else if (turncount % 2 != 0) {
-            currentPlayer = player1
-        }
 
-        if (e.target.getAttribute("data-player") == "") {
-            e.target.textContent = currentPlayer.getSymbol()
-            e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
-            checkWin()
-            console.log(turncount)
-            turncount++
-        } else {
-            return
+        switch (currentPlayer) {
+            case player1:
+                if (e.target.getAttribute("data-player") == "") {
+                    e.target.textContent = currentPlayer.getSymbol()
+                    e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
+                    checkWin()
+                    currentPlayer = player2
+                    turncount++
+                } else {
+                    return
+                }
+                break;
+
+            case player2:
+                if (e.target.getAttribute("data-player") == "") {
+                    e.target.textContent = currentPlayer.getSymbol()
+                    e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
+                    checkWin()
+                    currentPlayer = player1
+                    turncount++
+                } else {
+                    return
+                }
+                break;
         }
     }
 
@@ -77,7 +135,8 @@ const GameController = (() => {
             if (board[win[0]].getAttribute("data-player") === currentPlayer.getSymbol() &&
                 board[win[1]].getAttribute("data-player") === currentPlayer.getSymbol() &&
                 board[win[2]].getAttribute("data-player") === currentPlayer.getSymbol()) {
-                alert(`${currentPlayer.getName()} has won!`)
+                DOMController.winModal(currentPlayer)
+                reset()
             }
         })
 
@@ -87,5 +146,9 @@ const GameController = (() => {
         cell.addEventListener("click", play)
     })
 
-    // a reset game function that resets turn count and calls the reset board function 
+    function reset() {
+        turncount = 1
+        GameBoard.reset()
+    }
+
 })()
