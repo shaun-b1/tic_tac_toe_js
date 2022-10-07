@@ -18,20 +18,10 @@ const DOMController = (() => {
     const header = document.querySelector('header')
 
     function playerTurn(player) {
-        if(header.contains(document.querySelector('.player-turn)'))) { 
-            header.removeChild('.player-turn')           
-        }
 
-        const playerTurnDisplay = document.createElement('div');
-        playerTurnDisplay.classList.add('player-turn')
-
-        const playerTurnText = document.createElement('p');
+        const playerTurnText = document.querySelector('.player-turn-text')
         playerTurnText.textContent = `${player.getName()}`
 
-        playerTurnDisplay.appendChild(playerTurnText);
-        header.appendChild(playerTurnDisplay);
-
-        return playerTurnDisplay
     }
 
     function winModal(player) {
@@ -98,6 +88,8 @@ const GameController = (() => {
 
     function play(e) {
 
+
+        // can you make this into a single function, and place it inside the switch?
         switch (currentPlayer) {
             case player1:
                 if (e.target.getAttribute("data-player") == "") {
