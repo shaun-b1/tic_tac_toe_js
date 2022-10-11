@@ -17,11 +17,18 @@ const DOMController = (() => {
     const grid = document.querySelector('#grid')
     const header = document.querySelector('header')
 
-    function playerTurn(player) {
+    // function playerTurn(player) {
 
-        const playerTurnText = document.querySelector('.player-turn-text')
-        playerTurnText.textContent = `${player.getName()}`
+    //     const playerTurnText = document.querySelector('#player-turn-text')
+    //     playerTurnText.textContent = `${player.getName()}`
 
+    // }
+
+    function playerNames(player1, player2) {
+        const player1Name = document.querySelector('#p1-name')
+        const player2Name = document.querySelector('#p2-name')
+        player1Name.textContent = `${player1.getName()}`
+        player2Name.textContent = `${player2.getName()}`
     }
 
     function winModal(player) {
@@ -55,7 +62,7 @@ const DOMController = (() => {
         return cell
     }
 
-    return { grid, playerTurn, winModal, createCell }
+    return { grid, playerNames, winModal, createCell }
 })()
 
 const GameBoard = (() => {
@@ -84,7 +91,8 @@ const GameController = (() => {
     let currentPlayer = player1
     GameBoard.init()
     board = GameBoard.board
-    DOMController.playerTurn(currentPlayer)
+    DOMController.playerNames(player1, player2)
+    // DOMController.playerTurn(currentPlayer)
 
     function play(e) {
 
@@ -97,7 +105,7 @@ const GameController = (() => {
                     e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
                     checkWin()
                     currentPlayer = player2
-                    DOMController.playerTurn(currentPlayer)
+                    // DOMController.playerTurn(currentPlayer)
                 } else {
                     return
                 }
@@ -109,7 +117,7 @@ const GameController = (() => {
                     e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
                     checkWin()
                     currentPlayer = player1
-                    DOMController.playerTurn(currentPlayer)
+                    // DOMController.playerTurn(currentPlayer)
                 } else {
                     return
                 }
