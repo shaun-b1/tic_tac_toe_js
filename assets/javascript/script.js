@@ -15,18 +15,21 @@ function playerFactory(name, symbol) {
 
 const DOMController = (() => {
     const grid = document.querySelector('#grid')
-    const header = document.querySelector('header')
 
-    // function playerTurn(player) {
+    function playerTurn(player) {
+        const names = document.querySelector('#player-names').children
+        for (const name of names) {
+            name.classList.remove()
+        }
 
-    //     const playerTurnText = document.querySelector('#player-turn-text')
-    //     playerTurnText.textContent = `${player.getName()}`
+        
+        // clear classes, then find the id that equals player.getName, then add the class to it 
+    }
 
-    // }
-
+    // set the ids to equal the player.getName result
     function playerNames(player1, player2) {
-        const player1Name = document.querySelector('#p1-name')
-        const player2Name = document.querySelector('#p2-name')
+        const player1Name = document.querySelector('#player1')
+        const player2Name = document.querySelector('#player2')
         player1Name.textContent = `${player1.getName()}`
         player2Name.textContent = `${player2.getName()}`
     }
@@ -62,7 +65,7 @@ const DOMController = (() => {
         return cell
     }
 
-    return { grid, playerNames, winModal, createCell }
+    return { grid, playerTurn, playerNames, winModal, createCell }
 })()
 
 const GameBoard = (() => {
@@ -92,36 +95,24 @@ const GameController = (() => {
     GameBoard.init()
     board = GameBoard.board
     DOMController.playerNames(player1, player2)
-    // DOMController.playerTurn(currentPlayer)
 
     function play(e) {
+        if(currentPlayer == player1) {
+            turn(player1, player2, e)
+        } else if(currentPlayer == player2) {
+            turn(player2, player1, e)
+        }
+    }
 
-
-        // can you make this into a single function, and place it inside the switch?
-        switch (currentPlayer) {
-            case player1:
-                if (e.target.getAttribute("data-player") == "") {
-                    e.target.textContent = currentPlayer.getSymbol()
-                    e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
-                    checkWin()
-                    currentPlayer = player2
-                    // DOMController.playerTurn(currentPlayer)
-                } else {
-                    return
-                }
-                break;
-
-            case player2:
-                if (e.target.getAttribute("data-player") == "") {
-                    e.target.textContent = currentPlayer.getSymbol()
-                    e.target.setAttribute("data-player", `${currentPlayer.getSymbol()}`)
-                    checkWin()
-                    currentPlayer = player1
-                    // DOMController.playerTurn(currentPlayer)
-                } else {
-                    return
-                }
-                break;
+    function turn(player, opponent, e) {
+        DOMController.playerTurn(currentPlayer)
+        if (e.target.getAttribute("data-player") == "") {
+            e.target.textContent = player.getSymbol()
+            e.target.setAttribute("data-player", `${player.getSymbol()}`)
+            checkWin()
+            currentPlayer = opponent
+        } else {
+            return
         }
     }
 
@@ -145,7 +136,6 @@ const GameController = (() => {
                 reset()
             }
         })
-
     }
 
     board.forEach((cell) => {
@@ -157,4 +147,5 @@ const GameController = (() => {
         GameBoard.reset()
     }
 
+    return{player1, player2}
 })()

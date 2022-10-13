@@ -46,6 +46,11 @@ header {
     font-size: 2rem;
 }
 
+.current-player {
+    font-size: 2.5rem;
+    color: green;
+}
+
 main {
     height: var(--main);
     display: flex;
@@ -76,7 +81,6 @@ main {
     display: block;
     position: fixed;
     z-index: 2;
-    margin-top: 100px;
     left: 0;
     top: 0;
     width: 100%;
@@ -86,11 +90,10 @@ main {
 }
 
 .modal>div {
-    margin: 0 auto;
-    width: 40%;
-    margin: 1em;
+    padding: 50px 0;
+    margin: 100px 500px;
     text-align: center;
-    background-color: rgb;
+    background-color: white;
 }
 
 #form-modal>form {
