@@ -15,23 +15,24 @@ function playerFactory(name, symbol) {
 
 const DOMController = (() => {
     const grid = document.querySelector('#grid')
+    const nameContainer = document.querySelector('#player-names')
 
     function playerTurn(player) {
-        const names = document.querySelector('#player-names').children
+        const names = nameContainer.children
         for (const name of names) {
-            name.classList.remove()
+            player.getName() == name.id ? name.classList.remove('current-player') : name.classList.add('current-player')
         }
-
-        
-        // clear classes, then find the id that equals player.getName, then add the class to it 
     }
 
-    // set the ids to equal the player.getName result
     function playerNames(player1, player2) {
-        const player1Name = document.querySelector('#player1')
-        const player2Name = document.querySelector('#player2')
-        player1Name.textContent = `${player1.getName()}`
-        player2Name.textContent = `${player2.getName()}`
+
+        for (const argument of arguments) {
+            nameText = document.createElement('p')
+            nameText.id = `${argument.getName()}`
+            nameText.textContent = `${argument.getName()}`
+            nameContainer.append(nameText)
+        }
+        playerTurn(player2)
     }
 
     function winModal(player) {
@@ -105,7 +106,7 @@ const GameController = (() => {
     }
 
     function turn(player, opponent, e) {
-        DOMController.playerTurn(currentPlayer)
+        DOMController.playerTurn(player)
         if (e.target.getAttribute("data-player") == "") {
             e.target.textContent = player.getSymbol()
             e.target.setAttribute("data-player", `${player.getSymbol()}`)
