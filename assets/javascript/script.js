@@ -35,27 +35,51 @@ const DOMController = (() => {
         playerTurn(player2)
     }
 
+    function createModal() {
+        modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.id = 'modal';
+        return modal
+    }
+
+    function createCloseButton() {
+        closeModal = document.createElement('button');
+        closeModal.classList.add('close-modal')
+        closeModal.textContent = 'close modal'
+        closeModal.addEventListener('click', () => {
+            closeModal.parentElement.parentElement.remove()
+        })
+
+        return closeModal
+    }
+
     function winModal(player) {
-        winModal = document.createElement('div');
-        winModal.classList.add('modal');
-        winModal.id = 'winner-modal';
+        let winModal = createModal()
 
         modalBox = document.createElement('div')
-
         winDescription = document.createElement('p')
         winDescription.textContent = `${player.getName()} has won the game`
 
-        closeWinModal = document.createElement('button');
-        closeWinModal.classList.add('close-modal')
-        closeWinModal.textContent = 'close modal'
-        closeWinModal.addEventListener('click', () => {
-            closeWinModal.parentElement.parentElement.remove()
-        })
+        let closeModal = createCloseButton()
 
-        modalBox.append(winDescription, closeWinModal);
+        modalBox.append(winDescription, closeModal);
         winModal.appendChild(modalBox);
         document.body.appendChild(winModal)
 
+    }
+
+    function drawModal() {
+        let drawModal = createModal()
+
+        modalBox = document.createElement('div')
+        drawDescription = document.createElement('p')
+        drawDescription.textContent = `The game is a draw, no one has won!`
+
+        let closeModal = createCloseButton()
+
+        modalBox.append(drawDescription, closeModal);
+        drawModal.appendChild(modalBox);
+        document.body.appendChild(drawModal)
     }
 
     function createCell() {
@@ -66,7 +90,7 @@ const DOMController = (() => {
         return cell
     }
 
-    return { grid, playerTurn, playerNames, winModal, createCell }
+    return { grid, playerTurn, playerNames, winModal, drawModal, createCell }
 })()
 
 const GameBoard = (() => {
@@ -74,7 +98,7 @@ const GameBoard = (() => {
 
     function init() {
         for (let i = 0; i < 9; i++) {
-            cell = DOMController.createCell()
+            let cell = DOMController.createCell()
             board.push(cell)
         }
     }
@@ -94,7 +118,6 @@ const GameController = (() => {
     const player2 = playerFactory("player 2", "O")
     let currentPlayer = player1
     GameBoard.init()
-    board = GameBoard.board
     DOMController.playerNames(player1, player2)
 
     function play(e) {
@@ -111,6 +134,7 @@ const GameController = (() => {
             e.target.textContent = player.getSymbol()
             e.target.setAttribute("data-player", `${player.getSymbol()}`)
             checkWin()
+            checkDraw()
             currentPlayer = opponent
         } else {
             return
@@ -130,23 +154,26 @@ const GameController = (() => {
         ]
 
         winPositions.forEach(win => {
-            if (board[win[0]].getAttribute("data-player") === currentPlayer.getSymbol() &&
-                board[win[1]].getAttribute("data-player") === currentPlayer.getSymbol() &&
-                board[win[2]].getAttribute("data-player") === currentPlayer.getSymbol()) {
+            if (GameBoard.board[win[0]].getAttribute("data-player") === currentPlayer.getSymbol() &&
+                GameBoard.board[win[1]].getAttribute("data-player") === currentPlayer.getSymbol() &&
+                GameBoard.board[win[2]].getAttribute("data-player") === currentPlayer.getSymbol()) {
                 DOMController.winModal(currentPlayer)
-                reset()
+                GameBoard.reset()
             }
         })
     }
 
-    board.forEach((cell) => {
+    function checkDraw() {
+        if (GameBoard.board.every(cell => cell.getAttribute("data-player") !== '')) {
+            DOMController.drawModal()
+            GameBoard.reset()
+        }
+    }
+
+    
+    GameBoard.board.forEach((cell) => {
         cell.addEventListener("click", play)
     })
 
-    function reset() {
-        turncount = 1
-        GameBoard.reset()
-    }
-
-    return{player1, player2}
+    return{ player1, player2 }
 })()
