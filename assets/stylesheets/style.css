@@ -48,7 +48,7 @@ header {
 
 .current-player {
     font-size: 2.5rem;
-    color: green;
+    color: rgb(87, 167, 115);
 }
 
 main {
@@ -70,7 +70,7 @@ main {
 }
 
 .cell {
-    background: gold;
+    background: rgb(246, 174, 45);
     border-radius: 15px;
     display: flex;
     justify-content: center;
@@ -89,11 +89,24 @@ main {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal>div {
-    padding: 50px 0;
-    margin: 100px 500px;
+.modal-box {
+    display: block;
+    position: absolute;
+    left: 35%;
+    top: 25%;
+    width: 30%;
     text-align: center;
+    border-radius: 15px;
+    border: solid 1px black;
     background-color: white;
+}
+
+.modal-box > p {
+    margin: 40px 40px 15px;
+}
+
+.modal-box > button {
+    margin: 15px 40px 40px;
 }
 
 #form-modal>form {
