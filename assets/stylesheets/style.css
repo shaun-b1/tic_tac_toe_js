@@ -1,146 +1,170 @@
 :root {
-    --header: 15rem;
-    --footer: 35px;
-    --main: calc(100vh - calc(var(--header) + var(--footer)));
+  --header: 15rem;
+  --footer: 35px;
+  --main: calc(100vh - calc(var(--header) + var(--footer)));
 }
 
 body {
-    background: linear-gradient(45deg, rgb(65, 115, 255), rgb(171, 197, 255));
+  background: linear-gradient(45deg, rgb(65, 115, 255), rgb(171, 197, 255));
 }
 
 header {
-    width: 100%;
-    height: var(--header);
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  height: var(--header);
+  display: flex;
+  justify-content: center;
 }
 
 #banner {
-    margin-top: 40px;
-    padding: 10px 55px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 15px;
-    border: 1px solid black;
-    background-color: white;
+  margin-top: 40px;
+  padding: 10px 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 15px;
+  border: 1px solid black;
+  background-color: white;
 }
 
 #title {
-    font-size: 4rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+  font-size: 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
-#title > h1{
-    text-align: center;
+#title > h1 {
+  text-align: center;
 }
 
 #player-names {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    margin-top: 1.5rem;
-    font-size: 2rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin-top: 1.5rem;
+  font-size: 2rem;
 }
 
 .current-player {
-    font-size: 2.5rem;
-    color: rgb(87, 167, 115);
+  font-size: 2.5rem;
+  color: rgb(87, 167, 115);
 }
 
 main {
-    height: var(--main);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: var(--main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #grid {
-    border-radius: 15px;
-    display: grid;
-    gap: 8px;
-    padding: 10px;
-    border: 1px solid black;
-    background-color: white;
-    grid-template-rows: repeat(3, 150px);
-    grid-template-columns: repeat(3, 150px);
+  border-radius: 15px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid black;
+  background-color: white;
+  grid-template-rows: repeat(3, 150px);
+  grid-template-columns: repeat(3, 150px);
 }
 
 .cell {
-    background: rgb(246, 174, 45);
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background: rgb(246, 174, 45);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal {
-    display: block;
-    position: fixed;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+  display: block;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-box {
-    display: block;
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    border-radius: 15px;
-    border: solid 1px black;
-    background-color: white;
+  display: block;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  border-radius: 15px;
+  padding: 20px;
+  border: solid 1px black;
+  background-color: white;
 }
 
 .modal-box > p {
-    margin: 40px 0 15px;
+  margin: 40px 40px 15px;
 }
 
 .modal-box > button {
-    margin: 15px 0 40px;
+  margin: 15px 40px 40px;
 }
 
 #new-player-form {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 20px
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 #new-player-form > div {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
 }
 
 #new-player-form > div > * {
+  margin: 5px;
+}
+
+#new-player-form > div > label {
+    padding-top: 7px;
+}
+
+#new-player-form > div > input {
     padding: 5px;
+    border-radius: 5px;
+    border: solid 1px black;
+}
+
+#start-game {
+  margin: 10px;
+}
+
+#start-game > button {
+  background-color: rgb(87, 167, 115);
+  padding: 8px 24px;
+  border-radius: 20px;
+  box-shadow: 1px 1px 1px 1px #808080;
+  border: none;
+  color: white;
 }
 
 footer {
-    width: 100vw;
-    padding: 9.5px 0;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    background: black;
-    opacity: 0.8;
+  width: 100vw;
+  padding: 9.5px 0;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  background: black;
+  opacity: 0.8;
 }
 
 footer a {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: white;
 }
 
 footer p {
-    color: white;
+  color: white;
 }

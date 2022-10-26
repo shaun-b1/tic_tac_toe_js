@@ -1,20 +1,25 @@
-function playerFactory(name, symbol) {
-  return {
-    getName() {
-      return name;
-    },
-    getSymbol() {
-      return symbol;
-    },
-    setName(name) {
-      this.name = name;
-    },
-  };
+function PlayerFactory(name, symbol)  {
+
+  this.name = name
+  this.symbol = symbol
+
+  function setName(name) {
+    this.name = name;
+  }
+  return { name, symbol, setName };
 }
 
 const DOMController = (() => {
   const grid = document.querySelector("#grid");
   const nameContainer = document.querySelector("#player-names");
+  const newPlayerForm = document.querySelector("#new-player-form")
+  const startGameButton = document.querySelector("#start-game-button")
+
+  function prevent() {
+    newPlayerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+    })
+  }
 
   function createCell() {
     cell = document.createElement("div");
@@ -27,8 +32,8 @@ const DOMController = (() => {
   function playerNames(_player1, _player2) {
     for (const argument of arguments) {
       nameText = document.createElement("p");
-      nameText.id = `${argument.getName()}`;
-      nameText.textContent = `${argument.getName()}`;
+      nameText.id = `${argument.name}`;
+      nameText.textContent = `${argument.name}`;
       nameContainer.append(nameText);
     }
     playerTurn(_player2);
@@ -37,7 +42,7 @@ const DOMController = (() => {
   function playerTurn(player) {
     const names = nameContainer.children;
     for (const name of names) {
-      player.getName() == name.id
+      player.name == name.id
         ? name.classList.remove("current-player")
         : name.classList.add("current-player");
     }
@@ -69,7 +74,7 @@ const DOMController = (() => {
     let modalBox = document.querySelector(".modal-box");
     let closeModal = createCloseModalButton();
     winDescription = document.createElement("p");
-    winDescription.textContent = `${player.getName()} has won the game`;
+    winDescription.textContent = `${player.name} has won the game`;
 
     modalBox.append(winDescription, closeModal);
   }
@@ -86,7 +91,7 @@ const DOMController = (() => {
     modalBox.append(drawDescription, closeModal);
   }
 
-  return { playerTurn, playerNames, winModal, drawModal, createCell };
+  return { playerTurn, playerNames, winModal, drawModal, createCell, prevent, startGameButton };
 })();
 
 const GameBoard = (() => {
@@ -110,12 +115,11 @@ const GameBoard = (() => {
 })();
 
 const GameController = (() => {
-  const player1 = playerFactory("player 1", "X");
-  const player2 = playerFactory("player 2", "O");
+  let player1 = PlayerFactory("player 1", "X");
+  let player2 = PlayerFactory("player 2", "O");
   let currentPlayer = player1;
   GameBoard.init();
-  DOMController.playerNames(player1, player2);
-
+  
   function play(e) {
     if (currentPlayer === player1) {
       turn(player1, player2, e);
@@ -123,12 +127,12 @@ const GameController = (() => {
       turn(player2, player1, e);
     }
   }
-
+  
   function turn(player, opponent, e) {
     DOMController.playerTurn(player);
     if (e.target.getAttribute("data-player") === "") {
-      e.target.textContent = player.getSymbol();
-      e.target.setAttribute("data-player", `${player.getSymbol()}`);
+      e.target.textContent = player.symbol;
+      e.target.setAttribute("data-player", `${player.symbol}`);
       checkWin();
       checkDraw();
       currentPlayer = opponent;
@@ -136,7 +140,7 @@ const GameController = (() => {
       return;
     }
   }
-
+  
   function checkWin() {
     const winPositions = [
       [0, 1, 2],
@@ -148,30 +152,38 @@ const GameController = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-
+    
     winPositions.forEach((win) => {
       if (
         GameBoard.board[win[0]].getAttribute("data-player") ===
-          currentPlayer.getSymbol() &&
+        currentPlayer.symbol &&
         GameBoard.board[win[1]].getAttribute("data-player") ===
-          currentPlayer.getSymbol() &&
+        currentPlayer.symbol &&
         GameBoard.board[win[2]].getAttribute("data-player") ===
-          currentPlayer.getSymbol()
-      ) {
-        DOMController.winModal(currentPlayer);
-        GameBoard.reset();
-      }
-    });
-  }
-
-  function checkDraw() {
-    if (
-      GameBoard.board.every((cell) => cell.getAttribute("data-player") !== "")
-    ) {
-      DOMController.drawModal();
-      GameBoard.reset();
+        currentPlayer.symbol
+        ) {
+          DOMController.winModal(currentPlayer);
+          GameBoard.reset();
+        }
+      });
     }
-  }
+    
+    function checkDraw() {
+      if (
+        GameBoard.board.every((cell) => cell.getAttribute("data-player") !== "")
+        ) {
+          DOMController.drawModal();
+          GameBoard.reset();
+        }
+      }
+      
+  DOMController.startGameButton.addEventListener("click", () => {
+    DOMController.prevent() 
+    player1.setName(document.getElementById("player1").value)
+    player2.setName(document.getElementById("player2").value)
+    DOMController.playerNames(player1, player2);
+    DOMController.startGameButton.parentElement.parentElement.parentElement.remove()
+  })
 
   GameBoard.board.forEach((cell) => {
     cell.addEventListener("click", play);
