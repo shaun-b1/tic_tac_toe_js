@@ -1,12 +1,19 @@
-function PlayerFactory(name, symbol)  {
+function PlayerFactory(name, symbol, icon)  {
 
   this.name = name
   this.symbol = symbol
+  this.icon = icon
+
+  function displayIcon() {
+    let img = new Image()
+    img.src = icon
+    return img
+  }
 
   function setName(name) {
     this.name = name;
   }
-  return { name, symbol, setName };
+  return { name, symbol, icon, setName, displayIcon };
 }
 
 const DOMController = (() => {
@@ -18,6 +25,16 @@ const DOMController = (() => {
   function prevent() {
     newPlayerForm.addEventListener("submit", (e) => {
         e.preventDefault();
+    })
+  }
+
+  function startGame(player1, player2) {
+    startGameButton.addEventListener("click", () => {
+      prevent() 
+      player1.setName(document.getElementById("player1").value)
+      player2.setName(document.getElementById("player2").value)
+      playerNames(player1, player2);
+      startGameButton.parentElement.parentElement.parentElement.remove()
     })
   }
 
@@ -42,7 +59,7 @@ const DOMController = (() => {
   function playerTurn(player) {
     const names = nameContainer.children;
     for (const name of names) {
-      player.name == name.id
+      player.name === name.id
         ? name.classList.remove("current-player")
         : name.classList.add("current-player");
     }
@@ -63,6 +80,7 @@ const DOMController = (() => {
     closeModal.textContent = "close modal";
     closeModal.addEventListener("click", () => {
       closeModal.parentElement.parentElement.remove();
+      GameBoard.reset();
     });
     return closeModal;
   }
@@ -91,7 +109,7 @@ const DOMController = (() => {
     modalBox.append(drawDescription, closeModal);
   }
 
-  return { playerTurn, playerNames, winModal, drawModal, createCell, prevent, startGameButton };
+  return { playerTurn, playerNames, winModal, drawModal, createCell, prevent, startGame };
 })();
 
 const GameBoard = (() => {
@@ -115,9 +133,10 @@ const GameBoard = (() => {
 })();
 
 const GameController = (() => {
-  let player1 = PlayerFactory("player 1", "X");
-  let player2 = PlayerFactory("player 2", "O");
+  let player1 = PlayerFactory("player 1", "X", "assets/images/close.png");
+  let player2 = PlayerFactory("player 2", "O", "assets/images/circle.png");
   let currentPlayer = player1;
+  DOMController.startGame(player1, player2)
   GameBoard.init();
   
   function play(e) {
@@ -131,7 +150,7 @@ const GameController = (() => {
   function turn(player, opponent, e) {
     DOMController.playerTurn(player);
     if (e.target.getAttribute("data-player") === "") {
-      e.target.textContent = player.symbol;
+      e.target.appendChild(player.displayIcon())
       e.target.setAttribute("data-player", `${player.symbol}`);
       checkWin();
       checkDraw();
@@ -163,7 +182,6 @@ const GameController = (() => {
         currentPlayer.symbol
         ) {
           DOMController.winModal(currentPlayer);
-          GameBoard.reset();
         }
       });
     }
@@ -173,17 +191,8 @@ const GameController = (() => {
         GameBoard.board.every((cell) => cell.getAttribute("data-player") !== "")
         ) {
           DOMController.drawModal();
-          GameBoard.reset();
         }
       }
-      
-  DOMController.startGameButton.addEventListener("click", () => {
-    DOMController.prevent() 
-    player1.setName(document.getElementById("player1").value)
-    player2.setName(document.getElementById("player2").value)
-    DOMController.playerNames(player1, player2);
-    DOMController.startGameButton.parentElement.parentElement.parentElement.remove()
-  })
 
   GameBoard.board.forEach((cell) => {
     cell.addEventListener("click", play);

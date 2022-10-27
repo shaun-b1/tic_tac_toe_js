@@ -2,6 +2,8 @@
   --header: 15rem;
   --footer: 35px;
   --main: calc(100vh - calc(var(--header) + var(--footer)));
+  --green: rgb(87, 167, 115);
+  --gold: rgb(246, 174, 45);
 }
 
 body {
@@ -70,11 +72,16 @@ main {
 }
 
 .cell {
-  background: rgb(246, 174, 45);
+  background: var(--gold);
   border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+img {
+  width: 120px;
+  height: 120px;
 }
 
 .modal {
@@ -133,6 +140,7 @@ main {
 
 #new-player-form > div > input {
     padding: 5px;
+    width: 120px;
     border-radius: 5px;
     border: solid 1px black;
 }
@@ -141,8 +149,8 @@ main {
   margin: 10px;
 }
 
-#start-game > button {
-  background-color: rgb(87, 167, 115);
+button {
+  background-color: var(--green);
   padding: 8px 24px;
   border-radius: 20px;
   box-shadow: 1px 1px 1px 1px #808080;
