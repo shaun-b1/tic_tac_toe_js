@@ -1,37 +1,24 @@
-## Welcome to GitHub Pages
+# Tic Tac Toe Game (JavaScript)
+This is a simple implementation of the classic Tic Tac Toe game using HTML, CSS, and JavaScript. It allows two players to take turns marking spaces in a 3x3 grid, aiming to get three of their symbols in a row, column, or diagonal.
 
-You can use the [editor on GitHub](https://github.com/shaun-b1/Tic-Tac-Toe/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+### Features
+- Two-player mode: Play against a friend locally.
+- Responsive design: Enjoy the game on various devices.
+- Game state preservation: The game state is stored locally, so you can continue playing even after refreshing the page.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Usage
+To play the game, simply open the index.html file in your web browser. Click on the grid squares to make your moves. The game will automatically switch between players after each move.
 
-### Markdown
+### Installation
+You don't need to install anything to play the game. Just clone or download this repository to your local machine and open the index.html file in your web browser.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+git clone https://github.com/shaun-b1/tic_tac_toe_js.git
+cd tic_tac_toe_js
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+### Contributing
+Contributions are welcome! If you have any suggestions, bug fixes, or new features you'd like to add, feel free to open an issue or submit a pull request.
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/shaun-b1/Tic-Tac-Toe/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### License
+This project is licensed under the MIT License.
